@@ -5,9 +5,11 @@ import RemarkBreaks from 'remark-breaks'
 import RehypeKatex from 'rehype-katex'
 import RemarkGfm from 'remark-gfm'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-import { atelierHeathLight } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import {atelierHeathLight} from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import {API_URL} from "@/config";
 
 export function Markdown(props: { content: string }) {
+  const content = props.content.replaceAll('/files/tools/', `${API_URL.replace('/v1', '')}/files/tools/`)
   return (
     <div className="markdown-body">
       <ReactMarkdown
@@ -16,7 +18,7 @@ export function Markdown(props: { content: string }) {
           RehypeKatex,
         ]}
         components={{
-          code({ node, inline, className, children, ...props }) {
+          code({node, inline, className, children, ...props}) {
             const match = /language-(\w+)/.exec(className || '')
             return (!inline && match)
               ? (
@@ -38,7 +40,7 @@ export function Markdown(props: { content: string }) {
         }}
         linkTarget={'_blank'}
       >
-        {props.content}
+        {content}
       </ReactMarkdown>
     </div>
   )
